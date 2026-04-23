@@ -15,14 +15,17 @@ Route::get('/map', [MapController::class, 'index'])->name('map');
 
 Route::prefix('points')->group(function () {
     Route::post('/store', [PointController::class, 'store'])->name('points.store');
+    Route::delete('/{id}', [PointController::class, 'destroy'])->name('points.destroy');
 });
 
 Route::prefix('polylines')->group(function () {
     Route::post('/store', [PolylineController::class, 'store'])->name('polylines.store');
+    Route::delete('/{id}', [PolylineController::class, 'destroy'])->name('polylines.destroy');
 });
 
 Route::prefix('polygons')->group(function () {
     Route::post('/store', [PolygonController::class, 'store'])->name('polygons.store');
+    Route::delete('/{id}', [PolygonController::class, 'destroy'])->name('polygons.destroy');
 });
 
 Route::get('/dashboard', function () {

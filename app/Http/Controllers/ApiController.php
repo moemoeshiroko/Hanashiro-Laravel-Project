@@ -62,8 +62,10 @@ class ApiController extends Controller
                 'type' => 'Feature',
                 'geometry' => json_decode($item->geojson),
                 'properties' => [
+                    'id' => $item->id,
                     'name' => $item->name,
                     'description' => $item->description,
+                    'image' => $item->image ? asset('storage/images/' . $item->image) : null,
                     'created_at' => $item->created_at,
                 ],
             ];
