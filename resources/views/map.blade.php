@@ -16,94 +16,169 @@
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            height: 100vh;
             overflow: hidden;
-        }
-
-        .navbar {
-            z-index: 1000;
         }
 
         #map {
             width: 100%;
             flex: 1;
+            z-index: 1;
+        }
+
+        /* Modern Leaflet Control Styling */
+        .leaflet-control-zoom, .leaflet-control-layers, .leaflet-draw-toolbar {
+            border: none !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+            border-radius: 10px !important;
+            overflow: hidden;
+        }
+
+        .leaflet-control-zoom a, .leaflet-control-layers-toggle, .leaflet-draw-draw-polyline, 
+        .leaflet-draw-draw-polygon, .leaflet-draw-draw-rectangle, .leaflet-draw-draw-marker {
+            background-color: white !important;
+            color: #475569 !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            transition: all 0.2s;
+        }
+
+        .leaflet-control-zoom a:hover {
+            background-color: #f8fafc !important;
+            color: var(--primary-accent) !important;
         }
 
         /* Premium Popup Styling */
         .leaflet-popup-content-wrapper {
-            border-radius: 12px;
-            padding: 5px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border-radius: 16px;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
 
         .leaflet-popup-content {
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-            font-size: 14px;
-            line-height: 1.6;
-            margin: 10px;
-            width: 220px !important;
+            margin: 0;
+            width: 280px !important;
+        }
+
+        .popup-header {
+            background: #f8fafc;
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .popup-title {
             font-weight: 700;
-            font-size: 16px;
-            color: #1e293b;
-            margin-bottom: 8px;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 5px;
+            font-size: 18px;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        .popup-body {
+            padding: 15px;
         }
 
         .popup-desc {
-            color: #64748b;
-            margin-bottom: 10px;
+            color: #475569;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 15px;
         }
 
         .popup-img {
             width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.3s ease;
         }
 
         .popup-img:hover {
-            transform: scale(1.02);
+            transform: scale(1.03);
+        }
+
+        .popup-footer {
+            padding: 15px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .popup-meta {
             font-size: 11px;
             color: #94a3b8;
-            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
         }
 
-        .popup-meta i {
-            margin-right: 4px;
-        }
-
-        .btn-delete {
-            background-color: #ef4444;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            width: 100%;
+        .btn-delete-modern {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            padding: 10px;
+            border-radius: 8px;
             font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+            text-align: center;
+            width: 100%;
             cursor: pointer;
-            transition: background 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
         }
 
-        .btn-delete:hover {
-            background-color: #dc2626;
+        .btn-delete-modern:hover {
+            background: #dc2626;
             color: white;
+            border-color: #dc2626;
+        }
+
+        /* Modal Glassmorphism */
+        .modal-content {
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #f1f5f9;
+            padding: 20px 25px;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #f1f5f9;
+            padding: 15px 25px;
+        }
+
+        .form-control, .form-select {
+            border-radius: 12px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            border-color: var(--primary-accent);
+        }
+
+        /* Layer Toggle Switch Customization */
+        .form-check-input:checked {
+            background-color: var(--primary-accent);
+            border-color: var(--primary-accent);
+        }
+
+        .custom-marker i {
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -115,6 +190,12 @@
 
     {{-- Hidden Delete Form --}}
     <form id="delete-form" action="" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
+
+    {{-- Hidden Delete All Form --}}
+    <form id="delete-all-form" action="{{ route('map.delete-all') }}" method="POST" style="display: none;">
         @csrf
         @method('DELETE')
     </form>
@@ -143,7 +224,7 @@
                         <div class="mb-3">
                             <label for="formFile" class="form-label">Image</label>
                             <input class="form-control" type="file" id="formFile" name="image"
-                                onchange="document.getElementById('preview-image-point').src = window.URL.createObjectURL(this.files[0])">
+                                onchange="if(this.files[0].size > 2097152){ Swal.fire('Error', 'File size exceeds 2MB limit', 'error'); this.value=''; return; } document.getElementById('preview-image-point').src = window.URL.createObjectURL(this.files[0])">
                         </div>
                         <div class="mb-3">
                             <img src="" alt="" id="preview-image-point" class="img-thumbnail img-fluid"
@@ -190,7 +271,7 @@
                         <div class="mb-3">
                             <label for="formFilePolyline" class="form-label">Image</label>
                             <input class="form-control" type="file" id="formFilePolyline" name="image"
-                                onchange="document.getElementById('preview-image-polyline').src = window.URL.createObjectURL(this.files[0])">
+                                onchange="if(this.files[0].size > 2097152){ Swal.fire('Error', 'File size exceeds 2MB limit', 'error'); this.value=''; return; } document.getElementById('preview-image-polyline').src = window.URL.createObjectURL(this.files[0])">
                         </div>
                         <div class="mb-3">
                             <img src="" alt="" id="preview-image-polyline" class="img-thumbnail img-fluid"
@@ -237,7 +318,7 @@
                         <div class="mb-3">
                             <label for="formFilePolygon" class="form-label">Image</label>
                             <input class="form-control" type="file" id="formFilePolygon" name="image"
-                                onchange="document.getElementById('preview-image-polygon').src = window.URL.createObjectURL(this.files[0])">
+                                onchange="if(this.files[0].size > 2097152){ Swal.fire('Error', 'File size exceeds 2MB limit', 'error'); this.value=''; return; } document.getElementById('preview-image-polygon').src = window.URL.createObjectURL(this.files[0])">
                         </div>
                         <div class="mb-3">
                             <img src="" alt="" id="preview-image-polygon" class="img-thumbnail img-fluid"
@@ -254,6 +335,65 @@
                         <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    {{-- Settings Modal --}}
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel"><i class="fa-solid fa-sliders me-2"></i>Map Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="fw-bold mb-3">Basemaps</h6>
+                    <div class="list-group mb-4">
+                        <label class="list-group-item d-flex align-items-center gap-3">
+                            <input class="form-check-input flex-shrink-0" type="radio" name="basemapRadio" value="osm" checked>
+                            <span>OpenStreetMap</span>
+                        </label>
+                        <label class="list-group-item d-flex align-items-center gap-3">
+                            <input class="form-check-input flex-shrink-0" type="radio" name="basemapRadio" value="esri">
+                            <span>Esri World Imagery</span>
+                        </label>
+                        <label class="list-group-item d-flex align-items-center gap-3">
+                            <input class="form-check-input flex-shrink-0" type="radio" name="basemapRadio" value="google">
+                            <span>Google Streets</span>
+                        </label>
+                    </div>
+
+                    <h6 class="fw-bold mb-3">Overlay Layers</h6>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Points
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="togglePoints" checked>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Polylines
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="togglePolylines" checked>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Polygons
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="togglePolygons" checked>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <hr class="my-4">
+                    <h6 class="fw-bold mb-3 text-danger"><i class="fa-solid fa-triangle-exclamation me-2"></i>Danger Zone</h6>
+                    <button class="btn btn-outline-danger w-100 py-2" onclick="deleteAllData()">
+                        <i class="fa-solid fa-trash-can me-2"></i> Delete All Saved Data
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -274,11 +414,23 @@
 
         // Global function for deletion
         window.deleteFeature = function(url) {
-            if (confirm('Are you sure you want to delete this feature?')) {
-                const form = document.getElementById('delete-form');
-                form.action = url;
-                form.submit();
-            }
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.getElementById('delete-form');
+                    form.action = url;
+                    form.submit();
+                }
+            });
         };
 
         // Base Maps
@@ -371,22 +523,28 @@
 
         /* GeoJSON Points */
         var pointsLayer = L.geoJSON(null, {
+            pointToLayer: function(feature, latlng) {
+                return L.marker(latlng, {
+                    icon: L.divIcon({
+                        className: 'custom-marker',
+                        html: `<div style="background-color: #6366f1; width: 30px; height: 30px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.2);"><i class="fa-solid fa-location-dot" style="color: white; transform: rotate(45deg); font-size: 14px;"></i></div>`,
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 30]
+                    })
+                });
+            },
             onEachFeature: function (feature, layer) {
-                var popup_content = "<div class='popup-title'>" + feature.properties.name + "</div>" +
-                    "<div class='popup-desc'>" + (feature.properties.description || 'No description') + "</div>";
+                var popup_content = `<div class="popup-header"><h3 class="popup-title">${feature.properties.name}</h3></div><div class="popup-body">`;
 
                 if (feature.properties.image) {
-                    popup_content += "<img src='" + feature.properties.image + "' class='popup-img' onclick=\"window.open('" + feature.properties.image + "')\">";
+                    popup_content += `<img src="${feature.properties.image}" class="popup-img" onclick="window.open('${feature.properties.image}')">`;
                 }
 
-                popup_content += "<div class='popup-meta'>" +
-                    "<div><i class='fa-solid fa-location-dot'></i> " + feature.geometry.coordinates[1].toFixed(5) + ", " + feature.geometry.coordinates[0].toFixed(5) + "</div>" +
-                    "<div><i class='fa-solid fa-calendar-days'></i> " + feature.properties.created_at + "</div>" +
-                    "</div>";
+                popup_content += `<div class="popup-desc">${feature.properties.description || 'No description provided.'}</div></div>`;
 
-                popup_content += "<button class='btn-delete' onclick=\"deleteFeature('" +
-                    "{{ route('points.destroy', ':id') }}".replace(':id', feature.properties.id) + "')\">" +
-                    "<i class='fa-solid fa-trash'></i> Delete Point</button>";
+                popup_content += `<div class="popup-footer"><div class="popup-meta"><span><i class="fa-solid fa-location-dot me-1"></i> ${feature.geometry.coordinates[1].toFixed(4)}, ${feature.geometry.coordinates[0].toFixed(4)}</span><span><i class="fa-solid fa-clock me-1"></i> ${new Date(feature.properties.created_at).toLocaleDateString()}</span></div>`;
+
+                popup_content += `<button class="btn-delete-modern" onclick="deleteFeature('${"{{ route('points.destroy', ':id') }}".replace(':id', feature.properties.id)}')"><i class="fa-solid fa-trash-can"></i> Delete Point</button></div>`;
 
                 layer.on({
                     click: function (e) {
@@ -394,7 +552,7 @@
                     },
                     mouseover: function (e) {
                         layer.bindTooltip(feature.properties.name, {
-                            direction: "left",
+                            direction: "top",
                             sticky: true,
                         });
                     },
@@ -405,25 +563,22 @@
         /* GeoJSON Polylines */
         var polylinesLayer = L.geoJSON(null, {
             style: {
-                color: 'blue',
-                weight: 5,
-                opacity: 0.7
+                color: '#6366f1',
+                weight: 4,
+                opacity: 0.8
             },
             onEachFeature: function (feature, layer) {
-                var popup_content = "<div class='popup-title'>" + feature.properties.name + "</div>" +
-                    "<div class='popup-desc'>" + (feature.properties.description || 'No description') + "</div>";
+                var popup_content = `<div class="popup-header"><h3 class="popup-title">${feature.properties.name}</h3></div><div class="popup-body">`;
 
                 if (feature.properties.image) {
-                    popup_content += "<img src='" + feature.properties.image + "' class='popup-img' onclick=\"window.open('" + feature.properties.image + "')\">";
+                    popup_content += `<img src="${feature.properties.image}" class="popup-img" onclick="window.open('${feature.properties.image}')">`;
                 }
 
-                popup_content += "<div class='popup-meta'>" +
-                    "<div><i class='fa-solid fa-calendar-days'></i> " + feature.properties.created_at + "</div>" +
-                    "</div>";
+                popup_content += `<div class="popup-desc">${feature.properties.description || 'No description provided.'}</div></div>`;
 
-                popup_content += "<button class='btn-delete' onclick=\"deleteFeature('" +
-                    "{{ route('polylines.destroy', ':id') }}".replace(':id', feature.properties.id) + "')\">" +
-                    "<i class='fa-solid fa-trash'></i> Delete Line</button>";
+                popup_content += `<div class="popup-footer"><div class="popup-meta"><span><i class="fa-solid fa-clock me-1"></i> ${new Date(feature.properties.created_at).toLocaleDateString()}</span></div>`;
+
+                popup_content += `<button class="btn-delete-modern" onclick="deleteFeature('${"{{ route('polylines.destroy', ':id') }}".replace(':id', feature.properties.id)}')"><i class="fa-solid fa-trash-can"></i> Delete Line</button></div>`;
 
                 layer.on({
                     click: function (e) {
@@ -441,26 +596,23 @@
         /* GeoJSON Polygons */
         var polygonsLayer = L.geoJSON(null, {
             style: {
-                color: 'orange',
-                fillColor: 'orange',
-                fillOpacity: 0.5,
-                weight: 2
+                color: '#f59e0b',
+                fillColor: '#f59e0b',
+                fillOpacity: 0.4,
+                weight: 3
             },
             onEachFeature: function (feature, layer) {
-                var popup_content = "<div class='popup-title'>" + feature.properties.name + "</div>" +
-                    "<div class='popup-desc'>" + (feature.properties.description || 'No description') + "</div>";
+                var popup_content = `<div class="popup-header"><h3 class="popup-title">${feature.properties.name}</h3></div><div class="popup-body">`;
 
                 if (feature.properties.image) {
-                    popup_content += "<img src='" + feature.properties.image + "' class='popup-img' onclick=\"window.open('" + feature.properties.image + "')\">";
+                    popup_content += `<img src="${feature.properties.image}" class="popup-img" onclick="window.open('${feature.properties.image}')">`;
                 }
 
-                popup_content += "<div class='popup-meta'>" +
-                    "<div><i class='fa-solid fa-calendar-days'></i> " + feature.properties.created_at + "</div>" +
-                    "</div>";
+                popup_content += `<div class="popup-desc">${feature.properties.description || 'No description provided.'}</div></div>`;
 
-                popup_content += "<button class='btn-delete' onclick=\"deleteFeature('" +
-                    "{{ route('polygons.destroy', ':id') }}".replace(':id', feature.properties.id) + "')\">" +
-                    "<i class='fa-solid fa-trash'></i> Delete Area</button>";
+                popup_content += `<div class="popup-footer"><div class="popup-meta"><span><i class="fa-solid fa-clock me-1"></i> ${new Date(feature.properties.created_at).toLocaleDateString()}</span></div>`;
+
+                popup_content += `<button class="btn-delete-modern" onclick="deleteFeature('${"{{ route('polygons.destroy', ':id') }}".replace(':id', feature.properties.id)}')"><i class="fa-solid fa-trash-can"></i> Delete Area</button></div>`;
 
                 layer.on({
                     click: function (e) {
@@ -506,5 +658,58 @@
             polygonsLayer.addData(response.data);
             map.addLayer(polygonsLayer);
         });
+
+        // Settings Modal Logic
+        $('input[name="basemapRadio"]').on('change', function() {
+            const val = $(this).val();
+            map.removeLayer(osm);
+            map.removeLayer(esri_world_imagery);
+            map.removeLayer(google_streets);
+
+            if (val === 'osm') osm.addTo(map);
+            else if (val === 'esri') esri_world_imagery.addTo(map);
+            else if (val === 'google') google_streets.addTo(map);
+        });
+
+        $('#togglePoints').on('change', function() {
+            if ($(this).is(':checked')) map.addLayer(pointsLayer);
+            else map.removeLayer(pointsLayer);
+        });
+
+        $('#togglePolylines').on('change', function() {
+            if ($(this).is(':checked')) map.addLayer(polylinesLayer);
+            else map.removeLayer(polylinesLayer);
+        });
+
+        $('#togglePolygons').on('change', function() {
+            if ($(this).is(':checked')) map.addLayer(polygonsLayer);
+            else map.removeLayer(polygonsLayer);
+        });
+
+        // Delete All Data Logic
+        window.deleteAllData = function() {
+            Swal.fire({
+                title: 'Are you absolutely sure?',
+                text: "This will permanently delete ALL markers, lines, and polygons from the database. This action cannot be undone!",
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Yes, delete everything!',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Clearing Data...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                            document.getElementById('delete-all-form').submit();
+                        }
+                    });
+                }
+            });
+        };
     </script>
 @endpush

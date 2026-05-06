@@ -1,8 +1,8 @@
 @props(['sbrand'])
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">{{ $sbrand }}</a>
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-4" href="/"><i class="fa-solid fa-map-location-dot me-2 text-primary"></i>{{ $sbrand }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -25,7 +25,9 @@
                     </li>
                 @else
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">Login</a>
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                            <i class="fa-solid fa-gear"></i> Settings
+                        </a>
                     </li>
                 @endauth
             </ul>

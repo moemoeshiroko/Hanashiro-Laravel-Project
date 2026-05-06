@@ -12,6 +12,7 @@ Route::get('/', function () {
 });
 
 Route::get('/map', [MapController::class, 'index'])->name('map');
+Route::delete('/map/delete-all', [MapController::class, 'deleteAll'])->name('map.delete-all');
 
 Route::prefix('points')->group(function () {
     Route::post('/store', [PointController::class, 'store'])->name('points.store');

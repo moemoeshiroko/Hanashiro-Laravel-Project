@@ -30,7 +30,7 @@ class PolylineController extends Controller
             'name' => 'required|string|max:255',
             'descriptions' => 'nullable|string',
             'geometry_polyline' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $name_image = null;
@@ -49,8 +49,8 @@ class PolylineController extends Controller
                     // Initialize ImageManager with GD driver
                     $manager = new ImageManager(new Driver());
                     
-                    // Read image from file system
-                    $img = $manager->read($image);
+                    // Decode image from file system (Intervention Image v4 syntax)
+                    $img = $manager->decode($image);
                     
                     // Scale down if image is wider than 1200px
                     if ($img->width() > 1200) {
@@ -90,6 +90,7 @@ class PolylineController extends Controller
                 'type' => 'Feature',
                 'geometry' => json_decode($polyline->geojson),
                 'properties' => [
+                    'id' => $polyline->id,
                     'name' => $polyline->name,
                     'description' => $polyline->description,
                     'image' => $polyline->image ? asset('storage/images/' . $polyline->image) : null,
@@ -106,20 +107,17 @@ class PolylineController extends Controller
 
     public function destroy($id)
     {
-        $polyline = DB::table('polylines')->where('id', $id)->first();
+        $polyline = Polyline::findOrFail($id);
 
-        if ($polyline) {
-            if ($polyline->image) {
-                $imagePath = public_path('storage/images/' . $polyline->image);
-                if (file_exists($imagePath)) {
-                    unlink($imagePath);
-                }
+        if ($polyline->image) {
+            $imagePath = public_path('storage/images/' . $polyline->image);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
             }
-
-            DB::table('polylines')->where('id', $id)->delete();
-            return redirect()->back()->with('success', 'Polyline deleted successfully');
         }
 
-        return redirect()->back()->with('error', 'Polyline not found');
+        $polyline->delete();
+
+        return redirect()->back()->with('success', 'Polyline deleted successfully');
     }
 }

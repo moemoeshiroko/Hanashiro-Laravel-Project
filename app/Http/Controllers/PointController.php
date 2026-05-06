@@ -30,7 +30,7 @@ class PointController extends Controller
             'name' => 'required|string|max:255',
             'descriptions' => 'nullable|string',
             'geometry_point' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $name_image = null;
@@ -52,8 +52,8 @@ class PointController extends Controller
                     // Initialize ImageManager with GD driver
                     $manager = new ImageManager(new Driver());
                     
-                    // Read image from file system
-                    $img = $manager->read($image);
+                    // Decode image from file system (Intervention Image v4 syntax)
+                    $img = $manager->decode($image);
                     
                     // Scale down if image is wider than 1200px
                     if ($img->width() > 1200) {
@@ -94,6 +94,7 @@ class PointController extends Controller
                 'type' => 'Feature',
                 'geometry' => json_decode($point->geojson),
                 'properties' => [
+                    'id' => $point->id,
                     'name' => $point->name,
                     'description' => $point->description,
                     'image' => $point->image ? asset('storage/images/' . $point->image) : null,
@@ -110,20 +111,17 @@ class PointController extends Controller
 
     public function destroy($id)
     {
-        $point = DB::table('points')->where('id', $id)->first();
+        $point = Point::findOrFail($id);
 
-        if ($point) {
-            if ($point->image) {
-                $imagePath = public_path('storage/images/' . $point->image);
-                if (file_exists($imagePath)) {
-                    unlink($imagePath);
-                }
+        if ($point->image) {
+            $imagePath = public_path('storage/images/' . $point->image);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
             }
-
-            DB::table('points')->where('id', $id)->delete();
-            return redirect()->back()->with('success', 'Point deleted successfully');
         }
 
-        return redirect()->back()->with('error', 'Point not found');
+        $point->delete();
+
+        return redirect()->back()->with('success', 'Point deleted successfully');
     }
 }

@@ -30,7 +30,7 @@ class PolygonController extends Controller
             'name' => 'required|string|max:255',
             'descriptions' => 'nullable|string',
             'geometry_polygon' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $name_image = null;
@@ -49,8 +49,8 @@ class PolygonController extends Controller
                     // Initialize ImageManager with GD driver
                     $manager = new ImageManager(new Driver());
                     
-                    // Read image from file system
-                    $img = $manager->read($image);
+                    // Decode image from file system (Intervention Image v4 syntax)
+                    $img = $manager->decode($image);
                     
                     // Scale down if image is wider than 1200px
                     if ($img->width() > 1200) {
@@ -90,6 +90,7 @@ class PolygonController extends Controller
                 'type' => 'Feature',
                 'geometry' => json_decode($polygon->geojson),
                 'properties' => [
+                    'id' => $polygon->id,
                     'name' => $polygon->name,
                     'description' => $polygon->description,
                     'image' => $polygon->image ? asset('storage/images/' . $polygon->image) : null,
@@ -106,20 +107,17 @@ class PolygonController extends Controller
 
     public function destroy($id)
     {
-        $polygon = DB::table('polygons')->where('id', $id)->first();
+        $polygon = Polygon::findOrFail($id);
 
-        if ($polygon) {
-            if ($polygon->image) {
-                $imagePath = public_path('storage/images/' . $polygon->image);
-                if (file_exists($imagePath)) {
-                    unlink($imagePath);
-                }
+        if ($polygon->image) {
+            $imagePath = public_path('storage/images/' . $polygon->image);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
             }
-
-            DB::table('polygons')->where('id', $id)->delete();
-            return redirect()->back()->with('success', 'Polygon deleted successfully');
         }
 
-        return redirect()->back()->with('error', 'Polygon not found');
+        $polygon->delete();
+
+        return redirect()->back()->with('success', 'Polygon deleted successfully');
     }
 }
