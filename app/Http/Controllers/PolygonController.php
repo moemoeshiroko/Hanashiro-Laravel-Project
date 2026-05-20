@@ -79,6 +79,67 @@ class PolygonController extends Controller
         return redirect()->back()->with('success', 'Polygon saved successfully');
     }
 
+    public function update(Request $request, $id)
+    {
+        $polygon = Polygon::findOrFail($id);
+
+        $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'descriptions' => 'nullable|string',
+            'geometry_polygon' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            if ($image->isValid()) {
+                $targetDir = public_path('storage/images');
+                
+                if ($polygon->image) {
+                    $oldImagePath = $targetDir . '/' . $polygon->image;
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+                }
+
+                $extension = $image->getClientOriginalExtension() ?: $image->guessExtension();
+                $name_image = time() . "_polygon." . strtolower($extension);
+                
+                try {
+                    $manager = new ImageManager(new Driver());
+                    $img = $manager->decode($image);
+                    if ($img->width() > 1200) {
+                        $img->scale(width: 1200);
+                    }
+                    $img->save($targetDir . '/' . $name_image, quality: 75);
+                    $polygon->image = $name_image;
+                } catch (\Exception $e) {
+                    return redirect()->back()->with('error', 'Failed to process image: ' . $e->getMessage());
+                }
+            }
+        }
+
+        if ($request->has('name')) {
+            $polygon->name = $request->name;
+        }
+        if ($request->has('descriptions')) {
+            $polygon->description = $request->descriptions;
+        }
+        
+        if ($request->geometry_polygon) {
+            $polygon->geom = DB::raw("ST_GeomFromText('{$request->geometry_polygon}', 4326)");
+        }
+
+        $polygon->save();
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Polygon updated successfully']);
+        }
+
+        return redirect()->route('map')->with('success', 'Polygon updated successfully');
+    }
+
     public function index()
     {
         $polygons = DB::table('polygons')

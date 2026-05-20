@@ -6,9 +6,25 @@ use Illuminate\Http\Request;
 
 class MapController extends Controller
 {
-    public function index()
+    public function index($type = null, $id = null)
     {
-        return view('map');
+        $route = request()->route();
+        $resolvedId = $route ? $route->parameter('id') : $id;
+        $resolvedType = $route ? ($route->parameter('type') ?? $route->defaults['type'] ?? $type) : $type;
+
+        return view('map', [
+            'focusType' => $resolvedType,
+            'focusId' => $resolvedId
+        ]);
+    }
+
+    public function table()
+    {
+        $points = \App\Models\Point::all();
+        $polylines = \App\Models\Polyline::all();
+        $polygons = \App\Models\Polygon::all();
+
+        return view('table', compact('points', 'polylines', 'polygons'));
     }
 
     public function deleteAll()

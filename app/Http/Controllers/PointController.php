@@ -83,6 +83,68 @@ class PointController extends Controller
         return redirect()->back()->with('success', 'Point saved successfully');
     }
 
+    public function update(Request $request, $id)
+    {
+        $point = Point::findOrFail($id);
+
+        $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'descriptions' => 'nullable|string',
+            'geometry_point' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            if ($image->isValid()) {
+                $targetDir = public_path('storage/images');
+                
+                // Delete old image if exists
+                if ($point->image) {
+                    $oldImagePath = $targetDir . '/' . $point->image;
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+                }
+
+                $extension = $image->getClientOriginalExtension() ?: $image->guessExtension();
+                $name_image = time() . "_point." . strtolower($extension);
+                
+                try {
+                    $manager = new ImageManager(new Driver());
+                    $img = $manager->decode($image);
+                    if ($img->width() > 1200) {
+                        $img->scale(width: 1200);
+                    }
+                    $img->save($targetDir . '/' . $name_image, quality: 75);
+                    $point->image = $name_image;
+                } catch (\Exception $e) {
+                    return redirect()->back()->with('error', 'Failed to process image: ' . $e->getMessage());
+                }
+            }
+        }
+
+        if ($request->has('name')) {
+            $point->name = $request->name;
+        }
+        if ($request->has('descriptions')) {
+            $point->description = $request->descriptions;
+        }
+        
+        if ($request->geometry_point) {
+            $point->geom = DB::raw("ST_GeomFromText('{$request->geometry_point}', 4326)");
+        }
+
+        $point->save();
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Point updated successfully']);
+        }
+
+        return redirect()->route('map')->with('success', 'Point updated successfully');
+    }
+
     public function index()
     {
         $points = DB::table('points')
